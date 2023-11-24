@@ -11,8 +11,8 @@ export default function App() {
           style={styles.map}
           showsCompass={false}
           region={{
-            latitude: 30.3609,
-            longitude: 59.9311,
+            latitude: 59.9311,
+            longitude: 30.3609,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
