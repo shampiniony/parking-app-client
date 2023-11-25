@@ -1,0 +1,50 @@
+import { View, Image, Text, StyleSheet } from "react-native"
+
+export const CarView = () => {
+  return (
+    <View style={styles.container}>
+      <View style={{ flexDirection: 'row', width: '80%' }}>
+        <View style={{ padding: 10, margin: 10 }}>
+          <Image
+            source={require('./../../assets/car.png')}
+            style={{ width: 130, height: 40 }}
+          />
+        </View>
+        <View style={styles.box}>
+          <Text> Parking spot </Text>
+        </View>
+      </View>
+      <View style={styles.box}>
+        <Text> Parking spot </Text>
+        <Text> Avaibable places </Text>
+        <Text> Address </Text>
+      </View>
+      <View style={styles.box}>
+        <Text> Parking spot </Text>
+        <Text> Avaibable places </Text>
+        <Text> Address </Text>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  drawer: {
+    position: 'absolute',
+    zIndex: 10,
+    height: 350,
+    borderTopStartRadius: 20,
+    borderTopEndRadius: 20,
+    width: '100%',
+    backgroundColor: 'white'
+  },
+  container: {
+    margin: 25,
+  },
+  box: {
+    padding: 10,
+    margin: 10,
+    borderRadius: 13,
+    backgroundColor: '#F4F4F4',
+  }
+});

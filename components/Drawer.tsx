@@ -4,22 +4,24 @@ import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
 import { DrawerContext } from "../context/DrawerContext";
 import * as Haptics from 'expo-haptics';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { CarView } from "./drawer_views/CarView";
+import { ParkingSpotView } from "./drawer_views/ParkingSpotView";
 
 export default function Drawer() {
 
   const { extended, setExtended } = useContext<DrawerContext>(DrawerContext);
-  
+
   const position = useRef(new Animated.Value(-200)).current;
 
   const doubleTap = Gesture.Pan()
-  .minDistance(5)
-  .onEnd((e) => {
-    if(e.velocityY < 0) {
-      drawerExtend()
-    } else {
-      drawerRetract()
-    }
-  })
+    .minDistance(5)
+    .onEnd((e) => {
+      if (e.velocityY < 0) {
+        drawerExtend()
+      } else {
+        drawerRetract()
+      }
+    })
 
   const drawerExtend = () => {
     Animated.timing(position, {
@@ -42,18 +44,6 @@ export default function Drawer() {
       Haptics.ImpactFeedbackStyle.Light
     )
   }
-  
-  // const toggleDrawer = () => {
-  //   if (extended) {
-
-  //   } else {
-
-  //   }
-  //   Haptics.impactAsync(
-  //     Haptics.ImpactFeedbackStyle.Light
-  //   )
-  //   setExtended(!extended);
-  // }
 
   const { parking } = useContext<ParkingLotContext>(ParkingContext);
 
@@ -63,29 +53,10 @@ export default function Drawer() {
         <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 10 }}>
           <View style={{ width: 50, height: 3, backgroundColor: '#CBCBCB', borderRadius: 20 }} />
         </View>
-        <View style={styles.container}>
-        <View style={{ flexDirection: 'row', width: '80%'}}>
-          <View style={{padding: 10, margin: 10}}>
-            <Image
-              source={require('./../assets/car.png')}
-              style={{ width: 130, height: 40 }}
-            />
-          </View>
-          <View style={styles.box}>
-            <Text> Parking spot </Text>
-          </View>
-        </View>
-          <View style={styles.box}>
-            <Text> Parking spot </Text>
-            <Text> Avaibable places </Text>
-            <Text> Address </Text>
-          </View>
-          <View style={styles.box}>
-            <Text> Parking spot </Text>
-            <Text> Avaibable places </Text>
-            <Text> Address </Text>
-          </View>
-        </View>
+        {parking != null ?
+          <ParkingSpotView></ParkingSpotView>
+          :
+          <CarView></CarView>}
       </Animated.View>
     </GestureDetector>
   );
