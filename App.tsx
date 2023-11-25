@@ -4,22 +4,28 @@ import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
 import Drawer from "./components/Drawer";
 import { ParkingContext } from "./context/ParkingContext";
+import { DrawerContext } from "./context/DrawerContext";
 import { useState } from "react";
 import { Parking } from "./models/parkings";
 
 export default function App() {
 
   const [parking, setParking] = useState<Parking | null>(null);
-  const value = {parking, setParking};
+  const parkingValue = {parking, setParking};
+
+  const [extended, setExtended] = useState<boolean>(false);
+  const extendedValue = {extended, setExtended};
 
   return (
-    <ParkingContext.Provider value={value}>
+    <ParkingContext.Provider value={parkingValue}>
+      <DrawerContext.Provider value={extendedValue}>
       <View style={styles.container}>
         <StatusBar style="auto" />
         <SearchBar/>
         <MapComponent/>
         <Drawer/>
       </View>
+      </DrawerContext.Provider>
     </ParkingContext.Provider>
   );
 }

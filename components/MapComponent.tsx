@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import MapView from "react-native-maps";
 import { Parking } from "./../models/parkings";
 import ParkingLot from "./ParkingLot";
-import { MapContext } from "../context/MapContext";
+import { MapContext } from "./MapContext";
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
