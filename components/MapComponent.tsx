@@ -1,17 +1,19 @@
-import { RefObject, useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, Image } from 'react-native';
-import MapView, { Marker, MarkerPressEvent } from "react-native-maps";
+import { useEffect, useRef, useState } from "react";
+import { StyleSheet } from 'react-native';
+import MapView from "react-native-maps";
 import { Parking } from "./../models/parkings";
+import ParkingLot from "./ParkingLot";
+import { MapContext } from "../context/MapContext";
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
   const mapViewRef = useRef<MapView>(null);
 
   const getParkingData = () => {
-    fetch('https://user1698768484916.requestly.tech/parkings')
-      .then(response => response.json())
-      .then((json) => {
-        setParkings(json.parkings);
+    fetch('http://172.232.44.175/api/parkings?format=json')
+    .then(response => response.json())
+    .then((json) => {
+        setParkings(json);
       })
   }
 
@@ -20,6 +22,7 @@ export default function MapComponent() {
   }, [])
 
   return (
+    <MapContext.Provider value={mapViewRef}>
       <MapView
         ref={mapViewRef}
         initialRegion={{
@@ -33,34 +36,12 @@ export default function MapComponent() {
         showsPointsOfInterest={false}
       >
         {parkings?.map((spot, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: spot.center.coordinates[1],
-              longitude: spot.center.coordinates[0]
-            }}
-            onPress={(e) => handleParkingClick(e, mapViewRef)}
-          >
-            <Image
-              source={require('./../assets/spot.png')}
-              style={{ width: 20, height: 20 }}
-            />
-          </Marker>
+          <ParkingLot key={index} spot={spot} />
         ))}
       </MapView>
+    </MapContext.Provider>
   )
 }
-
-const handleParkingClick = async (e: MarkerPressEvent, mapViewRef: RefObject<MapView>) => {
-  mapViewRef.current?.animateToRegion({
-    latitude: e.nativeEvent.coordinate.latitude,
-    longitude: e.nativeEvent.coordinate.longitude,
-    latitudeDelta: 0.009,
-    longitudeDelta: 0.009,
-  }, 500);
-  console.log(e.nativeEvent.coordinate);
-};
-
 
 const styles = StyleSheet.create({
   map: {
