@@ -1,7 +1,8 @@
-import { RefObject, useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, Image } from 'react-native';
-import MapView, { Marker, MarkerPressEvent } from "react-native-maps";
-import { Parking } from "./../models/parkings";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { StyleSheet, GestureResponderEvent } from 'react-native';
+import MapView from "react-native-maps";
+import { Parking, Location } from "./../models/parkings";
+import ParkingLot from "./ParkingLot";
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
@@ -20,47 +21,24 @@ export default function MapComponent() {
   }, [])
 
   return (
-      <MapView
-        ref={mapViewRef}
-        initialRegion={{
-          latitude: 56.8431,
-          longitude: 60.6454,
-          latitudeDelta: 0.09,
-          longitudeDelta: 0.09,
-        }}
-        style={styles.map}
-        showsCompass={false}
-        showsPointsOfInterest={false}
-      >
-        {parkings?.map((spot, index) => (
-          <Marker
-            key={index}
-            coordinate={{
-              latitude: spot.center.coordinates[1],
-              longitude: spot.center.coordinates[0]
-            }}
-            onPress={(e) => handleParkingClick(e, mapViewRef)}
-          >
-            <Image
-              source={require('./../assets/spot.png')}
-              style={{ width: 20, height: 20 }}
-            />
-          </Marker>
-        ))}
-      </MapView>
+    <MapView
+      ref={mapViewRef}
+      initialRegion={{
+        latitude: 56.8431,
+        longitude: 60.6454,
+        latitudeDelta: 0.09,
+        longitudeDelta: 0.09,
+      }}
+      style={styles.map}
+      showsCompass={false}
+      showsPointsOfInterest={false}
+    >
+      {parkings?.map((spot, index) => (
+        <ParkingLot key={index} spot={spot} />
+      ))}
+    </MapView>
   )
 }
-
-const handleParkingClick = async (e: MarkerPressEvent, mapViewRef: RefObject<MapView>) => {
-  mapViewRef.current?.animateToRegion({
-    latitude: e.nativeEvent.coordinate.latitude,
-    longitude: e.nativeEvent.coordinate.longitude,
-    latitudeDelta: 0.009,
-    longitudeDelta: 0.009,
-  }, 500);
-  console.log(e.nativeEvent.coordinate);
-};
-
 
 const styles = StyleSheet.create({
   map: {
@@ -68,3 +46,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 });
+
+const handleParkingClick = async (e: GestureResponderEvent, mapViewRef: RefObject<MapView>) => {
+  // mapViewRef.current?.animateToRegion({
+  //   latitude: e.nativeEvent.coordinate.latitude,
+  //   longitude: e.nativeEvent.coordinate.longitude,
+  //   latitudeDelta: 0.001,
+  //   longitudeDelta: 0.001,
+  // }, 500);
+  console.log(this);
+};
