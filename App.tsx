@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
+import Drawer from "./components/Drawer";
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <StatusBar style="auto" />
       <SearchBar/>
       <MapComponent/>
+      <Drawer/>
     </View>
   );
 }

@@ -1,8 +1,10 @@
 import { StyleSheet, View } from "react-native"
+import useDrawer from "../hooks/useDrawer";
 
 export default function SearchBar() {
+  const { toggleDrawer, position } = useDrawer();
   return (
-    <View style={styles.searchbar} />
+    <View style={styles.searchbar} onTouchStart={toggleDrawer}/>
   )
 }
 
