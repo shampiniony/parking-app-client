@@ -9,10 +9,10 @@ export default function MapComponent() {
   const mapViewRef = useRef<MapView>(null);
 
   const getParkingData = () => {
-    fetch('https://user1698768484916.requestly.tech/parkings')
-      .then(response => response.json())
-      .then((json) => {
-        setParkings(json.parkings);
+    fetch('http://172.232.44.175/api/parkings?format=json')
+    .then(response => response.json())
+    .then((json) => {
+        setParkings(json);
       })
   }
 

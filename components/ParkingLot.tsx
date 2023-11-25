@@ -41,8 +41,8 @@ export default function ParkingLot({ spot }: { spot: Parking }) {
     <View>
       <Marker
         coordinate={{
-          latitude: spot.center.coordinates[1],
-          longitude: spot.center.coordinates[0]
+          latitude: spot.center[1],
+          longitude: spot.center[0]
         }}
         onPress={() => {
           console.log(active)

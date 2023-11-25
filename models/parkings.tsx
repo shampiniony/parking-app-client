@@ -1,71 +1,43 @@
-export interface ParkingData {
-  parkings: Parking[];
-  total: number;
-}
-
 export interface Parking {
-  category: Category;
-  _id: number;
-  center: Center;
-  location: Location;
-  spaces: Spaces;
-  zone?: Zone;
-  blocked: boolean;
+  id:          number;
+  blocked:     boolean;
   aggregating: boolean;
+  category:    Category;
+  location:    Location;
+  center:      number[];
+  space:       Space;
+  prices:      Price[];
 }
 
 export interface Category {
-  _id: number;
-  zonePurpose: ZonePurpose;
+  zone_purpose: ZonePurpose;
 }
 
 export enum ZonePurpose {
   All = "all",
 }
 
-export interface Center {
-  type: CenterType;
-  coordinates: number[];
-}
-
-export enum CenterType {
-  Point = "Point",
-}
-
 export interface Location {
-  type: LocationType;
+  type:        Type;
   coordinates: Array<number[]>;
 }
 
-export enum LocationType {
+export enum Type {
   LineString = "LineString",
   Polygon = "Polygon",
 }
 
-export interface Spaces {
-  handicapped?: number;
-  total?: number;
-}
-
-export interface Zone {
-  type: ZoneType;
-  prices: PriceElement[];
-}
-
-export interface PriceElement {
-  vehicleType: VehicleType;
-  price: PricePrice;
-}
-
-export interface PricePrice {
-  min: number;
-  max: number;
+export interface Price {
+  vehicle_type: VehicleType;
+  min_price:    number;
+  max_price:    number;
 }
 
 export enum VehicleType {
   Car = "car",
 }
 
-export enum ZoneType {
-  Simple = "simple",
+export interface Space {
+  handicapped: number;
+  total:       number;
 }
