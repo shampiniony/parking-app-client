@@ -20,7 +20,6 @@ export default function Drawer() {
       drawerRetract()
     }
   })
-  // toggleDrawer()
 
   const drawerExtend = () => {
     Animated.timing(position, {
