@@ -1,49 +1,28 @@
 import { Animated, StyleSheet, Text, View, Image } from "react-native";
 import { useContext, useRef, useState } from "react";
 import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
-import { DrawerContext } from "../context/DrawerContext";
 import * as Haptics from 'expo-haptics';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { CarView } from "./drawer_views/CarView";
 import { ParkingSpotView } from "./drawer_views/ParkingSpotView";
+import { useDrawerAnimation } from "../hooks/useDrawerAnimation";
 
 export default function Drawer() {
 
-  const { extended, setExtended } = useContext<DrawerContext>(DrawerContext);
-
-  const position = useRef(new Animated.Value(-200)).current;
+  const { position, isExtended, drawerExtend, drawerRetract } = useDrawerAnimation();
 
   const doubleTap = Gesture.Pan()
     .minDistance(5)
     .onEnd((e) => {
-      if (e.velocityY < 0) {
+      if (e.velocityY < 0 && !isExtended) {
         drawerExtend()
-      } else {
+        Haptics.selectionAsync()
+      } 
+      if (e.velocityY > 0 && isExtended) {
         drawerRetract()
+        Haptics.selectionAsync()
       }
     })
-
-  const drawerExtend = () => {
-    Animated.timing(position, {
-      toValue: 0,
-      duration: 350,
-      useNativeDriver: false,
-    }).start();
-    Haptics.impactAsync(
-      Haptics.ImpactFeedbackStyle.Light
-    )
-  }
-
-  const drawerRetract = () => {
-    Animated.timing(position, {
-      toValue: -200,
-      duration: 350,
-      useNativeDriver: false,
-    }).start();
-    Haptics.impactAsync(
-      Haptics.ImpactFeedbackStyle.Light
-    )
-  }
 
   const { parking } = useContext<ParkingLotContext>(ParkingContext);
 

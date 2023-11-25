@@ -36,11 +36,6 @@ export default function MapComponent() {
         style={styles.map}
         showsCompass={false}
         showsPointsOfInterest={false}
-        onRegionChangeComplete={(e) => {
-          if (e.latitudeDelta > 0.005) {
-            setParking(null);
-          }
-        }}
       >
         {parkings?.map((spot, index) => (
           <ParkingLot key={index} spot={spot} />
