@@ -2,9 +2,8 @@ import { useContext } from "react";
 import { StyleSheet } from 'react-native';
 import MapView from "react-native-maps";
 import ParkingLot from "./ParkingLot";
-import React from 'react';
 import { useParkingData } from "../hooks/useParkingData";
-import { MapContext } from "../context/MapContext";
+import { MapContext } from "./MapContext";
 
 export default function MapComponent() {
   const parkings = useParkingData();
