@@ -1,45 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef} from "react";
 import { StyleSheet } from 'react-native';
 import MapView from "react-native-maps";
-import { Parking } from "./../models/parkings";
 import ParkingLot from "./ParkingLot";
+import React from 'react';
+import { useParkingData } from "../hooks/useParkingData";
 import { MapContext } from "../context/MapContext";
+import MapViewDirections from 'react-native-maps-directions';
 
 export default function MapComponent() {
-  const [parkings, setParkings] = useState<Parking[]>();
-  const mapViewRef = useRef<MapView>(null);
+  const parkings = useParkingData();
+  const mapViewRef = useContext(MapContext);
 
-  const getParkingData = () => {
-    fetch('http://172.232.44.175/api/parkings?format=json')
-    .then(response => response.json())
-    .then((json) => {
-        setParkings(json);
-      })
-  }
-
-  useEffect(() => {
-    getParkingData();
-  }, [])
+  const origin = {latitude: 37.3318456, longitude: -122.0296002};
+  const destination = {latitude: 37.771707, longitude: -122.4053769};
 
   return (
-    <MapContext.Provider value={mapViewRef}>
-      <MapView
-        ref={mapViewRef}
-        initialRegion={{
-          latitude: 56.8431,
-          longitude: 60.6454,
-          latitudeDelta: 0.09,
-          longitudeDelta: 0.09,
-        }}
-        style={styles.map}
-        showsCompass={false}
-        showsPointsOfInterest={false}
-      >
-        {parkings?.map((spot, index) => (
-          <ParkingLot key={index} spot={spot} />
-        ))}
-      </MapView>
-    </MapContext.Provider>
+    <MapView
+      ref={mapViewRef}
+      initialRegion={{
+        latitude: 56.8431,
+        longitude: 60.6454,
+        latitudeDelta: 0.09,
+        longitudeDelta: 0.09,
+      }}
+      style={styles.map}
+      showsCompass={false}
+      showsPointsOfInterest={false}
+    >
+      <MapViewDirections
+        origin={origin}
+        destination={destination}
+        apikey={'AIzaSyCx3n09Zpghadz7-CH2BP3wW-yq9UcH5M8'}
+      />
+      {parkings?.map((spot, index) => (
+        <ParkingLot key={index} spot={spot} />
+      ))}
+    </MapView>
   )
 }
 
