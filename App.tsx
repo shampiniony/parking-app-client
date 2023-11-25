@@ -4,14 +4,15 @@ import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
 import Drawer from "./components/Drawer";
 import { ParkingContext } from "./context/ParkingContext";
+import { useRef, useState } from "react";
+import MapView from 'react-native-maps';
+import { MapContext } from './context/MapContext';
+import { PersonalAccount } from './modules/personal-account/personal-account';
 import { DrawerContext } from "./context/DrawerContext";
-import { useState } from "react";
 import { Parking } from "./models/parkings";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
-
-  const [parking, setParking] = useState<Parking | null>(null);
   const parkingValue = { parking, setParking };
 
   const [extended, setExtended] = useState<boolean>(false);

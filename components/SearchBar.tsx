@@ -1,20 +1,68 @@
-import { StyleSheet, View, ScrollView, TextInput, Image, Text } from "react-native"
-import { useState } from "react";
+import { StyleSheet, View, ScrollView, TextInput, Image, Text, TouchableOpacity } from "react-native"
+import { useContext, useState } from "react";
 import { FeatureMember } from "../models/yandex";
+import { useParkingData } from "../hooks/useParkingData";
+import { MapContext } from "../context/MapContext";
+import { Parking } from "../models/parkings";
+
+function getNearestParking(parkings: Parking[], longitude: number, latitude: number) {
+  if (parkings === undefined) {
+    return;
+  }
+
+  let indxOfNearestParking = 0;
+  let minDistance = Number.MAX_VALUE;
+  for (let i = 1; i < parkings.length; i++) {
+    const [curLongitude, curLatitude] = parkings[i].center;
+    const distance = Math.sqrt(Math.pow(curLatitude - latitude, 2) - Math.pow(curLongitude - longitude, 2));
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      indxOfNearestParking = i;
+    }
+  }
+
+  return parkings[indxOfNearestParking];
+}
 
 export default function SearchBar() {
+  const mapViewRef = useContext(MapContext);
   const [value, onChangeText] = useState("");
 
   const [suggestions, setSuggestions] = useState<FeatureMember[]>();
 
+  const parkings = useParkingData();
+
   const getTextSuggestions = (text: string) => {
-    if (text.length == 0) setSuggestions([]);
-    fetch(`https://geocode-maps.yandex.ru/1.x?apikey=API_KEY&geocode=${text}&format=json`)
+    if (text.length === 0) setSuggestions([]);
+    fetch(`https://geocode-maps.yandex.ru/1.x?apikey=17974270-5960-4f72-a053-fbf3df02f340&geocode=${text}&format=json`)
       .then(response => response.json())
       .then((json) => {
-        console.log(json);
         setSuggestions(json.response.GeoObjectCollection.featureMember);
       })
+  }
+
+  const pressSearchResultHandle = (value: FeatureMember) => {
+    onChangeText("")
+    setSuggestions([])
+
+    const [longitude, latitude] = value.GeoObject.Point.pos
+    .split(' ')
+    .map(coord => Number(coord));
+    
+    const nearestParking = getNearestParking(parkings!, longitude, latitude);
+    if (mapViewRef?.current && nearestParking) {
+      const [longitude, latitude] = nearestParking.center;
+
+      const newRegion = {
+        latitude: latitude,
+        longitude: longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      };
+
+      mapViewRef.current.animateToRegion(newRegion, 1000);
+    }
   }
 
   return (
@@ -32,7 +80,6 @@ export default function SearchBar() {
             onChangeText(text)
             getTextSuggestions(text)
           }}
-          onFocus={(e) => console.log(e)}
           value={value}
           style={styles.text_input}
         />
@@ -45,14 +92,21 @@ export default function SearchBar() {
       }>
         {suggestions?.map((value, index) => {
           return (
-            <View key={index} style={styles.result}>
-              <Text>
-                {value.GeoObject.name}
-              </Text>
-              <Text>
-                {value.GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted}
-              </Text>
-            </View>
+            <TouchableOpacity 
+              key={index}
+              onPress={ () => pressSearchResultHandle(value) }
+            >
+              <View 
+                style={styles.result}
+              >
+                <Text>
+                  {value.GeoObject.name}
+                </Text>
+                <Text>
+                  {value.GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted}
+                </Text>
+              </View>
+            </TouchableOpacity>
           )
         })}
       </ScrollView>
