@@ -24,11 +24,9 @@ export default function ParkingLot({ spot }: { spot: Parking }) {
       case 'Polygon':
         return <Polygon
           coordinates={
-            lot.coordinates[0].map<LatLng>((coords) => {
+            lot.coordinates.map<LatLng>((coords) => {
               return {
-                // @ts-ignore
                 longitude: coords[0],
-                // @ts-ignore
                 latitude: coords[1]
               }
             })
