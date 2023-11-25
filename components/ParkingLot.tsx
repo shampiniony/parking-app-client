@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { RefObject, useContext, useEffect, useState } from "react";
 import { Image, View } from 'react-native';
-import { LatLng, Marker, Polygon, Polyline } from "react-native-maps";
+import { MapContext } from "../context/MapContext";
 import { Parking, Location } from "./../models/parkings";
+import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
+import MapView, { LatLng, Marker, MarkerPressEvent, Polygon, Polyline } from "react-native-maps";
 
 export default function ParkingLot({ spot }: { spot: Parking }) {
-  const [active, setActive] = useState<boolean>(true);
+  const { setParking } = useContext<ParkingLotContext>(ParkingContext);
+  
+  const mapContext = useContext<RefObject<MapView> | undefined>(MapContext);
+  const [mapRef, setMapRef] = useState<RefObject<MapView> | undefined>();
+
+  useEffect(() => {
+    setMapRef(mapContext);
+  }, [mapContext]);
 
   const drawParkingLot = (lot: Location) => {
     switch (lot.type) {
@@ -37,6 +46,24 @@ export default function ParkingLot({ spot }: { spot: Parking }) {
     }
   }
 
+  const handleParkingClick = async (e: MarkerPressEvent, mapViewRef: RefObject<MapView> | undefined, spot : Parking) => {
+    setParking(spot);
+    mapViewRef?.current?.fitToCoordinates(spot.location.coordinates.map( (coords) => {
+      return {
+        latitude: coords[1],
+        longitude: coords[0],
+      }
+    }), {
+      animated: true,
+      edgePadding: {
+        top: 200,
+        right: 40,
+        bottom: 200,
+        left: 40,
+      }
+    })
+  };
+
   return (
     <View>
       <Marker
@@ -44,9 +71,8 @@ export default function ParkingLot({ spot }: { spot: Parking }) {
           latitude: spot.center[1],
           longitude: spot.center[0]
         }}
-        onPress={() => {
-          console.log(active)
-          setActive(!active)
+        onPress={(e) => {
+          handleParkingClick(e, mapRef, spot);
         }}
       >
         <Image
