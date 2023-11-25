@@ -7,24 +7,25 @@ import { ParkingContext } from "./context/ParkingContext";
 import { DrawerContext } from "./context/DrawerContext";
 import { useState } from "react";
 import { Parking } from "./models/parkings";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function App() {
 
   const [parking, setParking] = useState<Parking | null>(null);
-  const parkingValue = {parking, setParking};
+  const parkingValue = { parking, setParking };
 
   const [extended, setExtended] = useState<boolean>(false);
-  const extendedValue = {extended, setExtended};
+  const extendedValue = { extended, setExtended };
 
   return (
     <ParkingContext.Provider value={parkingValue}>
       <DrawerContext.Provider value={extendedValue}>
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        <SearchBar/>
-        <MapComponent/>
-        <Drawer/>
-      </View>
+        <GestureHandlerRootView style={styles.container}>
+            <StatusBar style="auto" />
+            <SearchBar />
+            <MapComponent />
+            <Drawer />
+        </GestureHandlerRootView>
       </DrawerContext.Provider>
     </ParkingContext.Provider>
   );
