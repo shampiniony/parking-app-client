@@ -1,6 +1,6 @@
 import { RefObject, useContext, useEffect, useState } from "react";
 import { Image, View } from 'react-native';
-import { MapContext } from "./MapContext";
+import { MapContext } from "../context/MapContext";
 import { Parking, Location } from "./../models/parkings";
 import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
 import MapView, { LatLng, Marker, MarkerPressEvent, Polygon, Polyline } from "react-native-maps";

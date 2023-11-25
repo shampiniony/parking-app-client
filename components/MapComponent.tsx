@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import MapView from "react-native-maps";
 import ParkingLot from "./ParkingLot";
 import { useParkingData } from "../hooks/useParkingData";
-import { MapContext } from "./MapContext";
+import { MapContext } from "../context/MapContext";
 
 export default function MapComponent() {
   const parkings = useParkingData();
