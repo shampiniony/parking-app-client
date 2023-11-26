@@ -8,7 +8,6 @@ import { ParkingContext } from "./context/ParkingContext";
 import { useState } from "react";
 import { Parking } from "./models/parkings";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { DrawerTimer } from './components/drawer/drawer-timer';
 
 export default function App() {
   const [parking, setParking] = useState<Parking | null>(null);
