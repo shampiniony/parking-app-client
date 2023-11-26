@@ -3,6 +3,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
 import Drawer from "./components/drawer/Drawer";
+import { DrawerContext } from "./context/DrawerContext";
 import { ParkingContext } from "./context/ParkingContext";
 import { useState } from "react";
 import { Parking } from "./models/parkings";
