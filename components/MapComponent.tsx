@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Parking } from "./../models/parkings";
 import ParkingLot from "./ParkingLot";
 import { MapContext } from "../context/MapContext";
 import MapView from "react-native-maps";
 import { useDrawerStore } from "../store/box-state.store";
-// import MapView from 'react-native-map-clustering';
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
   const mapViewRef = useRef<MapView>(null);
+  const setDrawerState = useDrawerStore(state => state.setDrawerState)
 
   const getParkingData = () => {
     fetch('http://172.232.44.175/api/parkings?format=json')
@@ -36,6 +36,7 @@ export default function MapComponent() {
         style={styles.map}
         showsCompass={false}
         showsPointsOfInterest={false}
+        onPress={() => setDrawerState("car")}
       >
         {parkings?.map((spot, index) => (
             <ParkingLot key={index} spot={spot} />

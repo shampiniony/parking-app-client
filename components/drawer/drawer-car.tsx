@@ -12,7 +12,7 @@ export const DrawerCar = () => {
           />
         </View>
         <View style={styles.box}>
-          <Text> Parking spot </Text>
+          <Text> K777АИ </Text>
         </View>
       </View>
       <View style={styles.box}>

@@ -5,7 +5,9 @@ export interface Parking {
   category:    Category;
   location:    Location;
   center:      number[];
-  space:       Space;
+  total_spots: number;
+  empty_spots: number;
+  handicapped_spots: number;
   prices:      Price[];
 }
 
@@ -35,9 +37,4 @@ export interface Price {
 
 export enum VehicleType {
   Car = "car",
-}
-
-export interface Space {
-  handicapped: number;
-  total:       number;
 }
