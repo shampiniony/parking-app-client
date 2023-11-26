@@ -4,6 +4,7 @@ import { Button } from './button'
 import axios, { AxiosError } from 'axios'
 import { TextInput } from 'react-native-gesture-handler'
 import { useParkingPlot } from '../../store/parking-plot.store'
+import { useCarStore } from '../../store/carNumber.store'
 
 const carNumberRegex = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui
 
@@ -11,10 +12,12 @@ export const DrawerTimer = () => {
   const [carNumber, setCarNumber] = useState<string>('');
   const [isValid, setIsValid] = useState(true);
   const parkingId = useParkingPlot(state => state.parkingPlotId);
+  const setNumber = useCarStore(state => state.setNumber)
 
   const paymentHandler = async () => {
     setIsValid(carNumberRegex.test(carNumber));
 
+    setNumber(carNumber);
     try {
       const url = `http://172.232.44.175/api/parkings/${parkingId}/reserve`;
       const response = await axios.post(url, { 'credentials': carNumber });
@@ -31,7 +34,7 @@ export const DrawerTimer = () => {
   }
 
   const textHandler = (value: string) => {
-    setCarNumber(value)
+    setCarNumber(value.toUpperCase())
     setIsValid(carNumberRegex.test(value))
   }
 
@@ -39,7 +42,7 @@ export const DrawerTimer = () => {
     <View style={styles.container}>
       <TextInput 
         placeholder='Номер машины'
-        style={styles.box}
+        style={[styles.box, { textTransform: 'uppercase' }]}
         onChangeText={textHandler}
       />
       <Button style={buttonStyle.button} onPress={ paymentHandler }>Оплатить</Button>

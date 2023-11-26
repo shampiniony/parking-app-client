@@ -1,7 +1,9 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native';
+import { useCarStore } from '../../store/carNumber.store';
 
 export const DrawerCar = () => {
+  const carNumber = useCarStore(state => state.number)
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', width: '80%'}}>
@@ -12,7 +14,7 @@ export const DrawerCar = () => {
           />
         </View>
         <View style={styles.box}>
-          <Text>K777АИ</Text>
+          <Text>{ carNumber }</Text>
         </View>
       </View>
       <Text style={{ textAlign: 'center', fontSize: 16 }}>Ближайшие парковки</Text>

@@ -4,6 +4,7 @@ import { FeatureMember } from "../models/yandex";
 import { useParkingData } from "../hooks/useParkingData";
 import { MapContext } from "../context/MapContext";
 import { Parking } from "../models/parkings";
+import { useSearchVisible } from "../store/searchVisible.store";
 
 function getNearestParking(parkings: Parking[], longitude: number, latitude: number) {
   if (parkings === undefined) {
@@ -30,16 +31,17 @@ export default function SearchBar() {
   const [value, onChangeText] = useState("");
 
   const [suggestions, setSuggestions] = useState<FeatureMember[]>();
+  const { visible, setVisible } = useSearchVisible()
 
   const parkings = useParkingData();
 
   const getTextSuggestions = (text: string) => {
     if (text.length === 0) setSuggestions([]);
     fetch(`https://geocode-maps.yandex.ru/1.x?apikey=17974270-5960-4f72-a053-fbf3df02f340&geocode=${text}&format=json`)
-      .then(response => response.json())
-      .then((json) => {
-        setSuggestions(json.response.GeoObjectCollection.featureMember);
-      })
+    .then(response => response.json())
+    .then((json) => {
+      setSuggestions(json.response.GeoObjectCollection.featureMember);
+    }).catch((e) => {})
   }
 
   const pressSearchResultHandle = (value: FeatureMember) => {
@@ -76,6 +78,7 @@ export default function SearchBar() {
           editable
           maxLength={40}
           placeholder="Поиск"
+          onPressIn={ () => { setVisible(false) }}
           onChangeText={text => {
             onChangeText(text)
             getTextSuggestions(text)
@@ -84,6 +87,11 @@ export default function SearchBar() {
           style={styles.text_input}
         />
       </View>
+      {
+      visible 
+      ? 
+      null
+      :
       <ScrollView
       style={
         {
@@ -110,6 +118,7 @@ export default function SearchBar() {
           )
         })}
       </ScrollView>
+    }
     </View>
   )
 }

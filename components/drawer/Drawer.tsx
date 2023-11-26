@@ -3,9 +3,11 @@ import { useRef } from "react";
 import * as Haptics from 'expo-haptics';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { DrawerHoc } from "./drawer.hoc";
+import { useSearchVisible } from "../../store/searchVisible.store";
 
 const Drawer = () => {
   const position = useRef(new Animated.Value(-200)).current;
+  const setVisible = useSearchVisible(state => state.setVisible)
 
   const doubleTap = Gesture.Pan()
   .minDistance(5)
@@ -29,6 +31,7 @@ const Drawer = () => {
   }
 
   const drawerRetract = () => {
+    setVisible(true)
     Animated.timing(position, {
       toValue: -200,
       duration: 350,
