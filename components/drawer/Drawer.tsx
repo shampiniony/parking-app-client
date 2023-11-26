@@ -7,7 +7,7 @@ import { useSearchVisible } from "../../store/searchVisible.store";
 
 const Drawer = () => {
   const position = useRef(new Animated.Value(-200)).current;
-  const setVisible = useSearchVisible(state => state.setVisible)
+  const {visible, setVisible} = useSearchVisible()
 
   const doubleTap = Gesture.Pan()
   .minDistance(5)
@@ -31,7 +31,6 @@ const Drawer = () => {
   }
 
   const drawerRetract = () => {
-    setVisible(true)
     Animated.timing(position, {
       toValue: -200,
       duration: 350,
@@ -48,7 +47,13 @@ const Drawer = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%', marginTop: 10 }}>
           <View style={{ width: 50, height: 3, backgroundColor: '#CBCBCB', borderRadius: 20 }} />
         </View>
-        <DrawerHoc/>
+        {
+          !visible
+          ? 
+          null
+          :
+          <DrawerHoc/>
+        }
       </Animated.View>
     </GestureDetector>
   );

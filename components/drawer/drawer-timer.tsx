@@ -5,6 +5,7 @@ import axios, { AxiosError } from 'axios'
 import { TextInput } from 'react-native-gesture-handler'
 import { useParkingPlot } from '../../store/parking-plot.store'
 import { useCarStore } from '../../store/carNumber.store'
+import { useStatus } from '../../store/payment.store'
 
 const carNumberRegex = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui
 
@@ -13,6 +14,7 @@ export const DrawerTimer = () => {
   const [isValid, setIsValid] = useState(true);
   const parkingId = useParkingPlot(state => state.parkingPlotId);
   const setNumber = useCarStore(state => state.setNumber)
+  const setStatus = useStatus(state => state.setStatus)
 
   const paymentHandler = async () => {
     setIsValid(carNumberRegex.test(carNumber));
@@ -20,8 +22,12 @@ export const DrawerTimer = () => {
     setNumber(carNumber);
     try {
       const url = `http://172.232.44.175/api/parkings/${parkingId}/reserve`;
-      const response = await axios.post(url, { 'credentials': carNumber });
+      let response = await axios.post(url, { 'credentials': carNumber }); 
+
       Linking.openURL(response.data["payment_link"]);
+
+      response = await axios.get('http://172.232.44.175/api/payment/status')
+      setStatus(response.data["status"])
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;

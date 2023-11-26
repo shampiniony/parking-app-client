@@ -8,14 +8,14 @@ import axios from 'axios';
 import { Button } from './button';
 import { useDrawerStore } from '../../store/box-state.store';
 import { Parking } from '../../models/parkings';
-import WebView from 'react-native-webview';
+import { useStatus } from '../../store/payment.store';
 
 export const DrawerParkingInfo = () => {
   const parkingId = useParkingPlot(state => state.parkingPlotId)
   const [comments, setComments] = useState<IComment[]>([]);
   const [isAddedComment, setIsAddedComment] = useState(false);
   const [parking, setParking] = useState<Parking | null>(null);
-  // const [url, setUrl] = useState<string | null>(null);
+  const status = useStatus(state => state.status)
 
   const serDrawerState = useDrawerStore(state => state.setDrawerState)
 
@@ -68,6 +68,9 @@ export const DrawerParkingInfo = () => {
           </Text>
           <Text style={{ textAlign: 'center' }}>
             Инвалидные места: { parking?.handicapped_spots }
+          </Text>
+          <Text style={{ textAlign: 'center' }}>
+            Статус: { status === "success" ? "Оплачено" : "Не оплачено" }
           </Text>
         </View>
       </View>
