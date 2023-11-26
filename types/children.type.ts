@@ -1,0 +1,1 @@
+export type ChildrenType = React.ReactElement | React.ReactElement[];

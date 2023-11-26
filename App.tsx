@@ -1,25 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
-import Drawer from "./components/Drawer";
+import Drawer from "./components/drawer/Drawer";
 import { ParkingContext } from "./context/ParkingContext";
 import { useState } from "react";
 import { Parking } from "./models/parkings";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { DrawerTimer } from './components/drawer/drawer-timer';
 
 export default function App() {
   const [parking, setParking] = useState<Parking | null>(null);
   const parkingValue = { parking, setParking };
 
+  const [extended, setExtended] = useState<boolean>(false);
+  const extendedValue = { extended, setExtended };
+
   return (
     <ParkingContext.Provider value={parkingValue}>
-      <GestureHandlerRootView style={styles.container}>
-        <StatusBar style="auto" />
-        <SearchBar />
-        <MapComponent />
-        <Drawer />
-      </GestureHandlerRootView>
+      <DrawerContext.Provider value={extendedValue}>
+        <GestureHandlerRootView style={styles.container}>
+          <StatusBar style="auto" />
+          <SearchBar />
+          {/* <View style={styles.header}>
+            <Image style={styles.img} source={{
+              uri: 'https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg'
+            }}/>
+          </View> */}
+          <MapComponent />
+          <Drawer/>
+        </GestureHandlerRootView>
+      </DrawerContext.Provider>
     </ParkingContext.Provider>
   );
 }
@@ -31,4 +42,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  header: {
+    position: 'absolute',
+    zIndex: 10,
+    top: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  img: {
+    width: 32,
+    height: 32,
+  }
 });

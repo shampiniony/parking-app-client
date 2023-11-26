@@ -1,15 +1,15 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet } from 'react-native';
-import MapView from "react-native-maps";
+import { useEffect, useRef, useState } from "react";
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Parking } from "./../models/parkings";
 import ParkingLot from "./ParkingLot";
 import { MapContext } from "../context/MapContext";
-import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
+import MapView from "react-native-maps";
+import { useDrawerStore } from "../store/box-state.store";
+// import MapView from 'react-native-map-clustering';
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
   const mapViewRef = useRef<MapView>(null);
-  const { setParking } = useContext<ParkingLotContext>(ParkingContext);
 
   const getParkingData = () => {
     fetch('http://172.232.44.175/api/parkings?format=json')
@@ -38,7 +38,7 @@ export default function MapComponent() {
         showsPointsOfInterest={false}
       >
         {parkings?.map((spot, index) => (
-          <ParkingLot key={index} spot={spot} />
+            <ParkingLot key={index} spot={spot} />
         ))}
       </MapView>
     </MapContext.Provider>
