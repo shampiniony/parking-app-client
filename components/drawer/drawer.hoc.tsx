@@ -15,13 +15,13 @@ export const DrawerHoc = () => {
       componentToRender = <DrawerCar/>;
       break;
     case 'comment':
-      componentToRender = <DrawerParkingInfo />;
+      componentToRender = <DrawerParkingInfo/>;
       break;
     case 'booking':
-      componentToRender = <DrawerTimer />;
+      componentToRender = <DrawerTimer/>;
       break;
     default:
-      componentToRender = <DrawerCar />;
+      componentToRender = <DrawerCar/>;
   }
 
   return <View>{componentToRender}</View>;

@@ -46,7 +46,7 @@ export default function MapComponent() {
         }
       >
         {parkings?.map((spot, index) => (
-            <ParkingLot key={index} spot={spot} />
+          <ParkingLot key={index} spot={spot} />
         ))}
       </MapView>
     </MapContext.Provider>
