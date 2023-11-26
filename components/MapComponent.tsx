@@ -5,11 +5,13 @@ import ParkingLot from "./ParkingLot";
 import { MapContext } from "../context/MapContext";
 import MapView from "react-native-maps";
 import { useDrawerStore } from "../store/box-state.store";
+import { useSearchVisible } from "../store/searchVisible.store";
 
 export default function MapComponent() {
   const [parkings, setParkings] = useState<Parking[]>();
   const mapViewRef = useRef<MapView>(null);
   const setDrawerState = useDrawerStore(state => state.setDrawerState)
+  const setVisible = useSearchVisible(state => state.setVisible)
 
   const getParkingData = () => {
     fetch('http://172.232.44.175/api/parkings?format=json')
@@ -22,7 +24,7 @@ export default function MapComponent() {
   useEffect(() => {
     getParkingData();
   }, [])
-
+  
   return (
     <MapContext.Provider value={mapViewRef}>
       <MapView
@@ -36,7 +38,12 @@ export default function MapComponent() {
         style={styles.map}
         showsCompass={false}
         showsPointsOfInterest={false}
-        onPress={() => setDrawerState("car")}
+        onPress={() => 
+        {
+          setVisible(false)
+          setDrawerState("car")
+        }
+        }
       >
         {parkings?.map((spot, index) => (
             <ParkingLot key={index} spot={spot} />

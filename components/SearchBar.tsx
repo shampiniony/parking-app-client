@@ -78,7 +78,7 @@ export default function SearchBar() {
           editable
           maxLength={40}
           placeholder="Поиск"
-          onPressIn={ () => { setVisible(false) }}
+          onPressIn={ () => { setVisible(true) }}
           onChangeText={text => {
             onChangeText(text)
             getTextSuggestions(text)
@@ -88,7 +88,7 @@ export default function SearchBar() {
         />
       </View>
       {
-      visible 
+      !visible 
       ? 
       null
       :

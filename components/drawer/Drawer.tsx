@@ -48,10 +48,10 @@ const Drawer = () => {
           <View style={{ width: 50, height: 3, backgroundColor: '#CBCBCB', borderRadius: 20 }} />
         </View>
         {
-          !visible
-          ? 
-          null
-          :
+          // !visible
+          // ? 
+          // null
+          // :
           <DrawerHoc/>
         }
       </Animated.View>
