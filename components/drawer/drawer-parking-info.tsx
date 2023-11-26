@@ -69,7 +69,7 @@ export const DrawerParkingInfo = () => {
           <Text style={{ textAlign: 'center' }}>
             Инвалидные места: { parking?.handicapped_spots }
           </Text>
-          <Text style={{ textAlign: 'center' }}>
+          <Text style={{ textAlign: 'center', color: status === "success" ? "green" : "red" }}>
             Статус: { status === "success" ? "Оплачено" : "Не оплачено" }
           </Text>
         </View>
