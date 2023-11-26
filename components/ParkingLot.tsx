@@ -4,9 +4,13 @@ import { MapContext } from "../context/MapContext";
 import { Parking, Location } from "./../models/parkings";
 import { ParkingContext, ParkingLotContext } from "../context/ParkingContext";
 import MapView, { LatLng, Marker, MarkerPressEvent, Polygon, Polyline } from "react-native-maps";
+import { useDrawerStore } from "../store/box-state.store";
+import { useParkingPlot } from "../store/parking-plot.store";
 
 export default function ParkingLot({ spot }: { spot: Parking }) {
   const { setParking } = useContext<ParkingLotContext>(ParkingContext);
+  const setDrawerState = useDrawerStore(state => state.setDrawerState);
+  const setParkingPlotId = useParkingPlot(state => state.setParkingPlotId)
   
   const mapContext = useContext<RefObject<MapView> | undefined>(MapContext);
   const [mapRef, setMapRef] = useState<RefObject<MapView> | undefined>();
@@ -47,6 +51,9 @@ export default function ParkingLot({ spot }: { spot: Parking }) {
   }
 
   const handleParkingClick = async (e: MarkerPressEvent, mapViewRef: RefObject<MapView> | undefined, spot : Parking) => {
+    setDrawerState("comment");
+    setParkingPlotId(spot.id);
+
     setParking(spot);
     mapViewRef?.current?.fitToCoordinates(spot.location.coordinates.map( (coords) => {
       return {
