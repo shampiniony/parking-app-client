@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   searchbar: {
     position: 'absolute',
     zIndex: 10,
-    top: 50,
+    top: 60,
     height: 'auto',
     borderRadius: 20,
     width: '90%',

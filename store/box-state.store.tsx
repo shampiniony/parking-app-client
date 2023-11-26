@@ -9,5 +9,8 @@ interface IDrawerState {
 
 export const useDrawerStore = create<IDrawerState>((set) => ({
   boxState: 'car',
-  setDrawerState: (state) => set({ boxState: state }),
+  setDrawerState: (state) => {
+    console.log(state)
+    set({ boxState: state })
+  },
 }));

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { LogBox, StyleSheet } from 'react-native';
 import SearchBar from "./components/SearchBar";
 import MapComponent from "./components/MapComponent";
 import Drawer from "./components/drawer/Drawer";
@@ -15,6 +15,8 @@ export default function App() {
 
   const [extended, setExtended] = useState<boolean>(false);
   const extendedValue = { extended, setExtended };
+
+  LogBox.ignoreAllLogs();//Ignore all log notifications
 
   return (
     <ParkingContext.Provider value={parkingValue}>

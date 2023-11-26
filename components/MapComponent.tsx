@@ -41,7 +41,7 @@ export default function MapComponent() {
         onPress={() => 
         {
           setVisible(false)
-          setDrawerState("car")
+          // setDrawerState("car")
         }
         }
       >
