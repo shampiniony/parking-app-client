@@ -18,19 +18,14 @@ export default function App() {
 
   return (
     <ParkingContext.Provider value={parkingValue}>
-      <DrawerContext.Provider value={extendedValue}>
-        <GestureHandlerRootView style={styles.container}>
-          <StatusBar style="auto" />
-          <SearchBar />
-          {/* <View style={styles.header}>
-            <Image style={styles.img} source={{
-              uri: 'https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg'
-            }}/>
-          </View> */}
-          <MapComponent />
-          <Drawer/>
-        </GestureHandlerRootView>
-      </DrawerContext.Provider>
+      <GestureHandlerRootView style={styles.container}>
+        <StatusBar style="auto"/>
+        <DrawerContext.Provider value={extendedValue}>
+          <SearchBar/>
+          <MapComponent/>
+        </DrawerContext.Provider>
+        <Drawer/>
+      </GestureHandlerRootView>
     </ParkingContext.Provider>
   );
 }

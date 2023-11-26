@@ -12,18 +12,36 @@ export const DrawerCar = () => {
           />
         </View>
         <View style={styles.box}>
-          <Text> K777АИ </Text>
+          <Text>K777АИ</Text>
+        </View>
+      </View>
+      <Text style={{ textAlign: 'center', fontSize: 16 }}>Ближайшие парковки</Text>
+      <View style={styles.box}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View>
+            <Text style={{fontWeight: 'bold'}}> Парковка #144 </Text>
+            <Text> Свободных мест: 6 </Text>
+          </View>
+          <Text>4,4 км</Text>
         </View>
       </View>
       <View style={styles.box}>
-        <Text> Parking spot </Text>
-        <Text> Avaibable places </Text>
-        <Text> Address </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View>
+            <Text style={{fontWeight: 'bold'}}> Парковка #134 </Text>
+            <Text> Свободных мест: 10 </Text>
+          </View>
+          <Text>4 км</Text>
+        </View>
       </View>
       <View style={styles.box}>
-        <Text> Parking spot </Text>
-        <Text> Avaibable places </Text>
-        <Text> Address </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <View>
+            <Text style={{fontWeight: 'bold'}}> Парковка #137 </Text>
+            <Text> Свободных мест: 2 </Text>
+          </View>
+          <Text>4,2 км</Text>
+        </View>
       </View>
     </View>
   );
