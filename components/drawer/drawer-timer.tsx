@@ -6,6 +6,7 @@ import { TextInput } from 'react-native-gesture-handler'
 import { useParkingPlot } from '../../store/parking-plot.store'
 import { useCarStore } from '../../store/carNumber.store'
 import { useStatus } from '../../store/payment.store'
+import { useDrawerStore } from "../../store/box-state.store"
 
 const carNumberRegex = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНОРСТУХ]{2}\d{2,3}$/ui
 
@@ -15,6 +16,8 @@ export const DrawerTimer = () => {
   const parkingId = useParkingPlot(state => state.parkingPlotId);
   const setNumber = useCarStore(state => state.setNumber)
   const setStatus = useStatus(state => state.setStatus)
+
+  const setDrawerState = useDrawerStore(state => state.setDrawerState);
 
   const paymentHandler = async () => {
     setIsValid(carNumberRegex.test(carNumber));
@@ -46,6 +49,7 @@ export const DrawerTimer = () => {
 
   return (
     <View style={styles.container}>
+      <Button style={buttonStyle.button} onPress={ () => { setDrawerState('comment') } }>Назад</Button>
       <TextInput 
         placeholder='Номер машины'
         style={[styles.box, { textTransform: 'uppercase' }]}
