@@ -1,8 +1,8 @@
 import { StyleSheet, View, ScrollView, TextInput, Image, Text, TouchableOpacity } from "react-native"
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useParkingLot } from "../store/parkingLot.store";
 import { FeatureMember } from "../models/yandex";
 import { useParkingData } from "../hooks/useParkingData";
-import { MapContext } from "../context/MapContext";
 import { Parking } from "../models/parkings";
 import { useSearchVisible } from "../store/searchVisible.store";
 
@@ -26,12 +26,13 @@ function getNearestParking(parkings: Parking[], longitude: number, latitude: num
   return parkings[indxOfNearestParking];
 }
 
-export default function SearchBar() {
-  const mapViewRef = useContext(MapContext);
+export const SearchBar = () => {
   const [value, onChangeText] = useState("");
 
   const [suggestions, setSuggestions] = useState<FeatureMember[]>();
   const { visible, setVisible } = useSearchVisible()
+
+  const setParkingLot = useParkingLot(state => state.setParkingPlotId);
 
   const parkings = useParkingData();
 
@@ -53,18 +54,7 @@ export default function SearchBar() {
     .map(coord => Number(coord));
     
     const nearestParking = getNearestParking(parkings!, longitude, latitude);
-    if (mapViewRef?.current && nearestParking) {
-      const [longitude, latitude] = nearestParking.center;
-
-      const newRegion = {
-        latitude: latitude,
-        longitude: longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      };
-
-      mapViewRef.current.animateToRegion(newRegion, 1000);
-    }
+    if (nearestParking) setParkingLot(nearestParking.id);
   }
 
   return (

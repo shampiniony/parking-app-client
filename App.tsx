@@ -1,34 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
 import { LogBox, StyleSheet } from 'react-native';
-import SearchBar from "./components/SearchBar";
-import MapComponent from "./components/MapComponent";
-import Drawer from "./components/drawer/Drawer";
-import { DrawerContext } from "./context/DrawerContext";
-import { ParkingContext } from "./context/ParkingContext";
-import { useState } from "react";
-import { Parking } from "./models/parkings";
+import { SearchBar } from "./components/SearchBar";
+import { MapComponent } from "./components/MapComponent";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Drawer from "./components/drawer/Drawer";
 
 export default function App() {
-  const [parking, setParking] = useState<Parking | null>(null);
-  const parkingValue = { parking, setParking };
-
-  const [extended, setExtended] = useState<boolean>(false);
-  const extendedValue = { extended, setExtended };
-
-  LogBox.ignoreAllLogs();//Ignore all log notifications
+  LogBox.ignoreAllLogs();
 
   return (
-    <ParkingContext.Provider value={parkingValue}>
-      <GestureHandlerRootView style={styles.container}>
-        <StatusBar style="auto"/>
-        <DrawerContext.Provider value={extendedValue}>
-          <SearchBar/>
-          <MapComponent/>
-        </DrawerContext.Provider>
-        <Drawer/>
-      </GestureHandlerRootView>
-    </ParkingContext.Provider>
+    <GestureHandlerRootView style={styles.container}>
+      <StatusBar style="auto" />
+      <SearchBar />
+      <MapComponent />
+      <Drawer />
+    </GestureHandlerRootView>
   );
 }
 

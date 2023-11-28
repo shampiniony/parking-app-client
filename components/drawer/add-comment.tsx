@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { styles } from './comment'
 import { TextInput, TouchableOpacity, View, Image } from 'react-native'
 import axios, { AxiosError } from 'axios';
-import { useParkingPlot } from '../../store/parking-plot.store';
+import { useParkingLot } from '../../store/parkingLot.store';
 
 const getRandomRating = () => Math.floor(Math.random() * 5) + 1;
 
 const AddComment = ({isAddedComment, setIsAddedComment}: {isAddedComment: boolean, setIsAddedComment: (value: boolean) => void}) => {
   const [comment, setComment] = useState('');
-  const parkingId = useParkingPlot(state => state.parkingPlotId); 
+  const parkingId = useParkingLot(state => state.parking?.id); 
 
   const addComment = async (parkingId: number, comment: string, name: string, rating: number) => {
     const url = `http://172.232.44.175/api/parkings/${parkingId}/comments/add`;
@@ -36,7 +36,7 @@ const AddComment = ({isAddedComment, setIsAddedComment}: {isAddedComment: boolea
   };
 
   const pressHandle = () => {
-    addComment(parkingId, comment, "Иванов Иван Иванович", getRandomRating())
+    addComment(parkingId ?? 0, comment, "Иванов Иван Иванович", getRandomRating())
     setComment("");
   }
 

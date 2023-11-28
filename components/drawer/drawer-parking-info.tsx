@@ -3,19 +3,18 @@ import { View, StyleSheet, Text, Linking } from 'react-native';
 import { Comment, IComment } from './comment';
 import { ScrollView } from 'react-native-gesture-handler';
 import AddComment from './add-comment';
-import { useParkingPlot } from '../../store/parking-plot.store';
+import { useParkingLot } from '../../store/parkingLot.store';
 import axios from 'axios';
 import { Button } from './button';
-import { useDrawerStore } from '../../store/box-state.store';
-import { Parking } from '../../models/parkings';
+import { useDrawerStore } from '../../store/drawerState.store';
 import { useStatus } from '../../store/payment.store';
 
 export const DrawerParkingInfo = () => {
-  const parkingId = useParkingPlot(state => state.parkingPlotId)
+  const parkingId = useParkingLot(state => state.parking?.id);
   const [comments, setComments] = useState<IComment[]>([]);
   const [isAddedComment, setIsAddedComment] = useState(false);
-  const [parking, setParking] = useState<Parking | null>(null);
   const status = useStatus(state => state.status)
+  const parking = useParkingLot(state => state.parking)
 
   const serDrawerState = useDrawerStore(state => state.setDrawerState)
 
@@ -25,15 +24,8 @@ export const DrawerParkingInfo = () => {
     setComments(response.data);
   };
 
-  const fetchParking = async() => { 
-    const url = `http://172.232.44.175/api/parkings/${parkingId}`;
-    const response = await axios.get(url);
-    setParking(response.data);
-  }
-
   useEffect(() => {
     fetchComments();
-    fetchParking();
   }, [parkingId, isAddedComment]);
 
   // const paymentHandler = async () => {

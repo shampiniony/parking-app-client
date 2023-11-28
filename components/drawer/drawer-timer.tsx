@@ -3,7 +3,7 @@ import { View, StyleSheet, Linking, Text } from 'react-native'
 import { Button } from './button'
 import axios, { AxiosError } from 'axios'
 import { TextInput } from 'react-native-gesture-handler'
-import { useParkingPlot } from '../../store/parking-plot.store'
+import { useParkingLot } from '../../store/parkingLot.store'
 import { useCarStore } from '../../store/carNumber.store'
 import { useStatus } from '../../store/payment.store'
 
@@ -12,7 +12,7 @@ const carNumberRegex = /^[АВЕКМНОРСТУХ]\d{3}(?<!000)[АВЕКМНО�
 export const DrawerTimer = () => {
   const [carNumber, setCarNumber] = useState<string>('');
   const [isValid, setIsValid] = useState(true);
-  const parkingId = useParkingPlot(state => state.parkingPlotId);
+  const parkingId = useParkingLot(state => state.parking?.id);
   const setNumber = useCarStore(state => state.setNumber)
   const setStatus = useStatus(state => state.setStatus)
 
