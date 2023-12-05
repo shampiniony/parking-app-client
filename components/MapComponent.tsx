@@ -15,20 +15,22 @@ export const MapComponent = () => {
   const setVisible = useSearchVisible(state => state.setVisible)
 
   useEffect( () => {
-    mapViewRef?.current?.fitToCoordinates(parkingLot?.location.coordinates.map( (coords) => {
-      return {
-        latitude: coords[1],
-        longitude: coords[0],
-      }
-    }), {
-      animated: true,
-      edgePadding: {
-        top: 200,
-        right: 40,
-        bottom: 400,
-        left: 40,
-      }
-    })
+    if (parkingLot != undefined) {
+      mapViewRef?.current?.fitToCoordinates(parkingLot.location.coordinates.map( (coords) => {
+        return {
+          latitude: coords[1],
+          longitude: coords[0],
+        }
+      }), {
+        animated: true,
+        edgePadding: {
+          top: 200,
+          right: 40,
+          bottom: 400,
+          left: 40,
+        }
+      })
+    }
   }, [parkingLot])
 
   const getParkingData = () => {
